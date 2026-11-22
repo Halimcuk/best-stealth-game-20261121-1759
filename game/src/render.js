@@ -4,7 +4,7 @@
 // is exactly the cone the guard sees through. The HUD bar carries the opals, the coins,
 // the alarm meter and the clock, and every screen is painted here too.
 
-import { FIELD, FONT, LOOT, PALETTE, PLAYER } from './config.js';
+import { FIELD, FONT, GUARD, LOOT, PALETTE, PLAYER } from './config.js';
 import { COLS, ORIGIN_X, ORIGIN_Y, ROWS, TILE } from './level.js';
 import { castRay } from './vision.js';
 
@@ -166,8 +166,10 @@ export function createRenderer(canvas) {
   }
 
   function drawCone(guard, level) {
-    const range = 222;
-    const halfAngle = 0.63;
+    // The cone drawn is the cone the guard sees through: same range and angle
+    // as vision.js, read from the same GUARD tuning, not a second copy.
+    const range = GUARD.sightRange;
+    const halfAngle = GUARD.sightHalfAngle;
     const rays = 26;
     let fill = PALETTE.coneCalm;
     let edge = PALETTE.coneCalmEdge;
@@ -216,7 +218,7 @@ export function createRenderer(canvas) {
     ctx.textAlign = 'center';
     ctx.fillText(guard.name, guard.x, guard.y - 22);
     if (guard.suspicion > 1) {
-      ctx.strokeStyle = guard.suspicion >= 55 ? '#f2a634' : '#f2c94c';
+      ctx.strokeStyle = guard.suspicion >= GUARD.suspiciousAt ? '#f2a634' : '#f2c94c';
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.arc(guard.x, guard.y, 19, -Math.PI / 2, -Math.PI / 2 + (guard.suspicion / 100) * Math.PI * 2);

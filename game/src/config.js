@@ -9,6 +9,8 @@ export const STEP = 1 / 60;
 
 export const PLAYER = {
   radius: 13,
+  /** The speed ladder the chase balance rests on: walk 168 < guard chase 178
+    < sprint 238, so walking away from a chase loses ground and sprinting wins it. */
   walkSpeed: 168,
   sneakSpeed: 96,
   sprintSpeed: 238,
@@ -27,7 +29,9 @@ export const GUARD = {
   sightHalfAngle: 0.63,
   patrolSpeed: 64,
   investigateSpeed: 98,
-  chaseSpeed: 152,
+  /** Faster than Wren's walk (168) so a chase is a real threat, slower than the
+    sprint (238) so breaking away on foot is still possible. */
+  chaseSpeed: 178,
   /** Suspicion per second when Wren stands lit, close, and still in a cone. */
   suspicionBaseRate: 58,
   /** Suspicion drains this fast per second once Wren is out of sight. */
